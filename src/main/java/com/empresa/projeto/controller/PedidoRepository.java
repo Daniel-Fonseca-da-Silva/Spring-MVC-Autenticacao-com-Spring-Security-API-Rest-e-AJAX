@@ -2,6 +2,7 @@ package com.empresa.projeto.controller;
 
 import com.empresa.projeto.model.Pedido;
 import com.empresa.projeto.model.StatusPedido;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
+    @Cacheable("pedidos")
     List<Pedido> findByStatus(StatusPedido status, Pageable sort);
 
     @Query("SELECT p FROM Pedido p JOIN p.user u WHERE u.username = :username")
