@@ -3,6 +3,8 @@ package com.empresa.projeto.controller;
 import com.empresa.projeto.model.Pedido;
 import com.empresa.projeto.model.StatusPedido;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,22 +26,13 @@ public class HomeController {
 
     @GetMapping
     public String home(Model model, Principal principal) {
-        List<Pedido> pedidos = pedidoRepository.findAll();
+
+        Sort sort = Sort.by("dataEntrega").descending();
+        PageRequest pagination = PageRequest.of(0, 10, sort);
+
+        List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.ENTREGUE, pagination);
         model.addAttribute("pedidos", pedidos);
         return "home";
-    }
-
-    @GetMapping("/{status}")
-    public String statusPedido(@PathVariable("status") String status, Model model) {
-        List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.valueOf(status.toUpperCase(Locale.ROOT)));
-        model.addAttribute("pedidos", pedidos);
-        model.addAttribute("status", status);
-        return "home";
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String onError() {
-        return "redirect:/home";
     }
 
 }
