@@ -12,18 +12,25 @@
                     <div class="row">
                         <div class="col-12 col-sm-8 mb-3">
 
-                                <div class="card-header alert-primary mb-3">{{pedido.nomeProduto}}</div>
-
-                            <div class="row">
-                                <div class="col-md-5">Valor: <input/></div>
-                                <div class="col-md-7">Data da entrega: <input/></div>
-                            </div>
+                            <div class="card-header alert-primary mb-3">{{pedido.nomeProduto}}</div>
 
                             <div>Produto</div>
                             <div><a v-bind:href="pedido.urlProduto">{{pedido.nomeProduto}}</a></div>
 
                             <div>Descrição</div>
-                            <div><textarea class="form-control">{{pedido.descricao}}</textarea></div>
+                            <div>
+                                <textarea disabled="disabled" class="form-control">{{pedido.descricao}}</textarea>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-5">Valor: <input class="form-control" v-model="pedido.valorNegociado" /></div>
+                                <div class="col-md-7">Data da entrega: <input class="form-control" v-model="pedido.dataEntrega"/></div>
+                            </div>
+                            <div class="mt-2">
+                                <label>Comentário</label>
+                                <textarea class="form-control" v-model="pedido.comentario"></textarea>
+                            </div>
+                            <button v-on:click="enviarOferta(pedido)" class="btn btn-primary mt-2">Fazer oferta</button>
                         </div>
                         <div class="col-12 col-sm-4">
                             <div>
@@ -46,6 +53,11 @@
                  axios
                   .get('http://localhost:8080/api/pedidos/aguardando')
                   .then(response => (this.pedidos = response.data))
+              },
+              methods: {
+                enviarOferta: function(pedido) {
+                    console.log(pedido);
+                }
               }
             });
         }
