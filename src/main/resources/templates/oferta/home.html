@@ -1,33 +1,33 @@
 <html>
     <head th:replace="~{base :: head}"></head>
-    <body>
+    <body onload="onLoad()">
         <div th:replace="~{base :: logo}"></div>
 
-        <div class="container">
+        <div class="container" id="ofertas">
 
-            <div th:replace="~{base :: titulo('Últimos Pedidos')}"></div>
+            <div th:replace="~{base :: titulo('Solicite o seu Pedido')}"></div>
 
-            <div class="card mb-3" th:each="pedido : ${pedidos}">
+            <div class="card mb-3" v-for="pedido in pedidos">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-sm-8 mb-3">
 
-                                <div class="card-header alert-primary" th:text="${pedido.nomeProduto}">Nome do produto</div>
+                                <div class="card-header alert-primary mb-3">{{pedido.nomeProduto}}</div>
 
                             <div class="row">
-                                <div class="col-md-5">Valor: <span th:if="${pedido.valorNegociado} != null" th:text="${'R$ ' + #numbers.formatDecimal(pedido.valorNegociado,3,'POINT',2,'COMMA')}">200,99</span></div>
-                                <div class="col-md-7">Data da entrega: <span th:text="${#temporals.format(pedido.dataEntrega,'dd/MM/yyyy')}">10/12/2023</span></div>
+                                <div class="col-md-5">Valor: <input/></div>
+                                <div class="col-md-7">Data da entrega: <input/></div>
                             </div>
 
                             <div>Produto</div>
-                            <div><input class="form-control" th:value="${pedido.urlProduto}" value="url do produto"/></div>
+                            <div><a v-bind:href="pedido.urlProduto">{{pedido.nomeProduto}}</a></div>
 
                             <div>Descrição</div>
-                            <div><textarea class="form-control" th:text="${pedido.descricao}">Descrição do pedito</textarea></div>
+                            <div><textarea class="form-control">{{pedido.descricao}}</textarea></div>
                         </div>
                         <div class="col-12 col-sm-4">
                             <div>
-                                <img class="img-thumbnail" th:src="${pedido.urlImagem}" src=""/>
+                                <img class="img-thumbnail" v-bind:src="pedido.urlImagem"/>
                             </div>
                         </div>
                     </div>
@@ -35,4 +35,36 @@
             </div>
         </div>
     </body>
+    <script>
+        function onLoad() {
+            var app = new Vue({
+              el: '#ofertas',
+              data: {
+                pedidos: [
+                {
+                    id: 1,
+                    nomeProduto: "Placa de Vídeo GALAX - GeForce RTX 3070 Ti",
+                    valorNegociado:	5999.99,
+                    dataEntrega: "2022-07-18",
+                    urlProduto:	"https://www.amazon.com.br/Placa-V%C3%ADdeo-GALAX-GeForce-1-Click/dp/B09N7QXNW1",
+                    urlImagem: "https://m.media-amazon.com/images/I/61xTxK3wPZL._AC_SL1000_.jpg",
+                    descricao: "Placa de Vídeo Gigabyte AORUS NVIDIA GeForce RTX 3070 Ti LHR MASTER 8G Conceito de Design Na dimensão AORUS, tudo é construído digitalmente. A iluminação e os padrões são mapeados nos produtos com um estilo eficiente e de fluxo livre. Bem-vindo à Era do Código Digital. Refrigeração Máxima Coberta O resfriamento MAX-Covered possui dois ventiladores de pás exclusivas de 115 mm e um de 100 mm com design de garra de vento e rotação alternada, para que a pressão do ar possa cobrir completamente o dissipador de calor. LCD EDGE VIEW O monitor LCD não só exibe informações da placa gráfica, mas também vários textos, imagens e GIFs favoritos. Você também pode ajustar os efeitos de iluminação por meio do software RGB FUSION 2.0. RGB FUSION 2.0 Com 16,7 milhões de opções de cores personalizáveis ??e vários efeitos de iluminação, você pode escolher os efeitos de iluminação ou sincronizar com outros dispositivos AORUS. Atuação GeForce RTX ™ 3070 Ti com 8 GB de memória e 608 GB / s de largura de banda de memória tem 6144 núcleos CUDA®, núcleos de rastreamento de raios de 2ª geração e núcleos de tensores de 3ª geração operando em paralelo. É a solução mais adequada para quem está jogando, renderizando e desenvolvendo tecnologia de IA. Excelência Excelente projeto de circuito com materiais de primeira qualidade, não apenas maximiza a excelência da GPU, mas também mantém a operação estável e longa vida.",
+                    status:	"AGUARDANDO"
+                },
+                {
+                    id: 2,
+                    nomeProduto: "Processador I9",
+                    valorNegociado:	7999.99,
+                    dataEntrega: "2022-09-23",
+                    urlProduto: null,
+                    urlImagem: null,
+                    descricao: "Novo processador intel 2022",
+                    status:	"ENTREGUE"
+                }
+                ]
+              }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </html>
