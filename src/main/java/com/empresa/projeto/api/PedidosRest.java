@@ -1,35 +1,29 @@
-package com.empresa.projeto.controller;
+package com.empresa.projeto.api;
 
+import com.empresa.projeto.controller.PedidoRepository;
 import com.empresa.projeto.model.Pedido;
 import com.empresa.projeto.model.StatusPedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
-@Controller
-@RequestMapping("/home")
-public class HomeController {
+@RestController
+@RequestMapping("/api/pedidos")
+public class PedidosRest {
 
     @Autowired
     private PedidoRepository pedidoRepository;
 
-
-    @GetMapping
-    public String home(Model model, Principal principal) {
-
+    @GetMapping("aguardando")
+    public List<Pedido> getPedidosAguardandoOfertas() {
         Sort sort = Sort.by("id").descending();
         PageRequest pagination = PageRequest.of(0, 10, sort);
-
-        List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.ENTREGUE, pagination);
-        model.addAttribute("pedidos", pedidos);
-        return "home";
+        return pedidoRepository.findByStatus(StatusPedido.AGUARDANDO, pagination);
     }
 
 }
