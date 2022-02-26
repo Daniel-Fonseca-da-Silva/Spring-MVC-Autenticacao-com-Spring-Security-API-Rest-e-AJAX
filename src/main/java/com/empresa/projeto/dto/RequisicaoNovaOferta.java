@@ -2,6 +2,8 @@ package com.empresa.projeto.dto;
 
 import com.empresa.projeto.model.Oferta;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +11,11 @@ import java.time.format.DateTimeFormatter;
 public class RequisicaoNovaOferta {
 
     private Long pedidoId;
+    @NotNull
+    @Pattern(regexp = "^\\d+(\\.\\d+{2})?$")
     private String valor;
+    @NotNull
+    @Pattern(regexp = "^\\d{2}/\\d{2}/\\d{4}$")
     private String dataDaEntrega;
     private String comentario;
 
